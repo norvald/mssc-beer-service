@@ -4,10 +4,16 @@ import guru.springframework.msscbeerservice.domain.Beer;
 import guru.springframework.msscbeerservice.repositories.BeerRepository;
 import guru.springframework.msscbeerservice.web.mappers.BeerMapper;
 import guru.springframework.msscbeerservice.web.model.BeerDto;
+import guru.springframework.msscbeerservice.web.model.BeerPagedList;
+import guru.springframework.msscbeerservice.web.model.BeerStyleEnum;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -17,13 +23,57 @@ public class BeerServiceImpl implements BeerService {
     private final BeerMapper beerMapper;
 
     @Override
-    public BeerDto getBeerById(UUID beerId) {
-        return beerMapper.beerToBeerDto(
+    public BeerPagedList listBeers(String beerName, BeerStyleEnum beerStyle, Boolean showInventoryOnHand, PageRequest pageRequest) {
+        BeerPagedList beerPagedList;
+        Page<Beer> beerPage;
 
-                beerRepository
-                        .findById(beerId)
-                        .orElseThrow(NotFoundException::new)
-        );
+        if(StringUtils.hasText(beerName) && beerStyle!=null) {
+            beerPage = beerRepository.findAllByBeerNameAndBeerStyle(beerName, beerStyle, pageRequest);
+        } else if(StringUtils.hasText(beerName) && beerStyle==null) {
+            beerPage = beerRepository.findAllByBeerName(beerName, pageRequest);
+        } else if(!StringUtils.hasText(beerName) && beerStyle!=null) {
+            beerPage = beerRepository.findAllByBeerStyle(beerStyle, pageRequest);
+        } else {
+            beerPage= beerRepository.findAll(pageRequest);
+        }
+        if (showInventoryOnHand) {
+            beerPagedList = new BeerPagedList(beerPage
+                    .getContent()
+                    .stream()
+                    .map(beerMapper::beerToBeerDtoWithInventory)
+                    .collect(Collectors.toList()),
+                    PageRequest.of(beerPage.getPageable().getPageNumber(),
+                            beerPage.getPageable().getPageSize()),
+                    beerPage.getTotalElements());
+        } else {
+            beerPagedList = new BeerPagedList(beerPage
+                    .getContent()
+                    .stream()
+                    .map(beerMapper::beerToBeerDto)
+                    .collect(Collectors.toList()),
+                    PageRequest.of(beerPage.getPageable().getPageNumber(),
+                            beerPage.getPageable().getPageSize()),
+                    beerPage.getTotalElements());
+        }
+        return beerPagedList;
+    }
+
+    @Override
+    public BeerDto getBeerById(UUID beerId, Boolean showInventoryOnHand) {
+        if(showInventoryOnHand) {
+            return beerMapper.beerToBeerDtoWithInventory(
+                    beerRepository
+                            .findById(beerId)
+                            .orElseThrow(NotFoundException::new)
+            );
+        } else {
+            return beerMapper.beerToBeerDto(
+                    beerRepository
+                            .findById(beerId)
+                            .orElseThrow(NotFoundException::new)
+            );
+
+        }
     }
 
     @Override
@@ -46,4 +96,5 @@ public class BeerServiceImpl implements BeerService {
     public void deleteBeerById(UUID beerId) {
         beerRepository.deleteById(beerId);
     }
+
 }
