@@ -64,6 +64,27 @@ public class BeerServiceImpl implements BeerService {
         return beerPagedList;
     }
 
+    @Cacheable(cacheNames = "beerUpcCache", key= "#upc", condition = "#showInventoryOnHand == false")
+    @Override
+    public BeerDto getBeerByUpc(String upc, Boolean showInventoryOnHand) {
+        log.debug("getBeerByUpc called");
+
+        if(showInventoryOnHand) {
+            return beerMapper.beerToBeerDtoWithInventory(
+                    beerRepository
+                            .findOptionalByUpc(upc)
+                            .orElseThrow(NotFoundException::new)
+            );
+        } else {
+            return beerMapper.beerToBeerDto(
+                    beerRepository
+                            .findOptionalByUpc(upc)
+                            .orElseThrow(NotFoundException::new)
+            );
+
+        }
+    }
+
     @Cacheable(cacheNames = "beerCache", key= "#beerId", condition = "#showInventoryOnHand == false")
     @Override
     public BeerDto getBeerById(UUID beerId, Boolean showInventoryOnHand) {
