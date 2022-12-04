@@ -27,7 +27,7 @@ public class BrewingService {
     public void checkForLowInventory() {
         List<Beer> beers = beerRepository.findAll();
         beers.forEach(beer -> {
-            int inventoryOnHand = beerInventoryService.getOnHandInventory(beer.getId());
+            int inventoryOnHand = beerInventoryService.getOnHandInventory(beer);
             log.debug("Min Onhand is " + beer.getMinOnHand());
             log.debug("Inventory is " + inventoryOnHand);
             if (inventoryOnHand < beer.getMinOnHand()) {

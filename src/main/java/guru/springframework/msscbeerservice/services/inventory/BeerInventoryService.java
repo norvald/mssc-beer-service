@@ -1,7 +1,7 @@
 package guru.springframework.msscbeerservice.services.inventory;
 
-import java.util.UUID;
+import guru.springframework.msscbeerservice.domain.Beer;
 
 public interface BeerInventoryService {
-    Integer getOnHandInventory(UUID beerId);
+    Integer getOnHandInventory(Beer beer);
 }
