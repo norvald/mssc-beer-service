@@ -1,7 +1,10 @@
 package guru.sfg.common.events;
 
-import guru.springframework.msscbeerservice.web.model.BeerDto;
-import lombok.*;
+import guru.sfg.common.model.BeerDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 

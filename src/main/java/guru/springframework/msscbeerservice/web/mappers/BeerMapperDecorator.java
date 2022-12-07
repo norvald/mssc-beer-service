@@ -1,8 +1,8 @@
 package guru.springframework.msscbeerservice.web.mappers;
 
+import guru.sfg.common.model.BeerDto;
 import guru.springframework.msscbeerservice.domain.Beer;
 import guru.springframework.msscbeerservice.services.inventory.BeerInventoryService;
-import guru.springframework.msscbeerservice.web.model.BeerDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
