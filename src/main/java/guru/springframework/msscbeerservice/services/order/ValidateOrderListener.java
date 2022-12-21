@@ -1,9 +1,9 @@
 package guru.springframework.msscbeerservice.services.order;
 
-import guru.sfg.common.events.ValidateBeerOrderRequest;
-import guru.sfg.common.events.ValidateBeerOrderResponse;
-import guru.sfg.common.model.BeerOrderDto;
-import guru.sfg.common.model.BeerOrderLineDto;
+import guru.sfg.brewery.model.events.ValidateBeerOrderRequest;
+import guru.sfg.brewery.model.events.ValidateBeerOrderResponse;
+import guru.sfg.brewery.model.BeerOrderDto;
+import guru.sfg.brewery.model.BeerOrderLineDto;
 import guru.springframework.msscbeerservice.config.JmsConfig;
 import guru.springframework.msscbeerservice.domain.Beer;
 import guru.springframework.msscbeerservice.repositories.BeerRepository;
@@ -35,7 +35,7 @@ public class ValidateOrderListener {
             }
         }
 
-        jmsTemplate.convertAndSend(JmsConfig.VALIDATE_ORDER_RESULT_QUEUE, ValidateBeerOrderResponse.builder()
+        jmsTemplate.convertAndSend(JmsConfig.VALIDATE_ORDER_RESPONSE_QUEUE, ValidateBeerOrderResponse.builder()
                 .beerOrderId(beerOrderDto.getId().toString())
                 .isValid(isValid)
                 .build());

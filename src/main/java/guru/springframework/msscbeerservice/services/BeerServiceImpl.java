@@ -1,8 +1,8 @@
 package guru.springframework.msscbeerservice.services;
 
-import guru.sfg.common.model.BeerDto;
-import guru.sfg.common.model.BeerPagedList;
-import guru.sfg.common.model.BeerStyleEnum;
+import guru.sfg.brewery.model.BeerDto;
+import guru.sfg.brewery.model.BeerPagedList;
+import guru.sfg.brewery.model.BeerStyleEnum;
 import guru.springframework.msscbeerservice.domain.Beer;
 import guru.springframework.msscbeerservice.repositories.BeerRepository;
 import guru.springframework.msscbeerservice.web.mappers.BeerMapper;
