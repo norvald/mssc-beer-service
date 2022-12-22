@@ -76,7 +76,7 @@ class BeerControllerTest {
 
         return BeerDto.builder()
                 .beerName("Lucky Jack")
-                .beerStyle(BeerStyleEnum.APA)
+                .beerStyle(BeerStyleEnum.APA.name())
                 .upc(BeerLoader.BEER_1_UPC)
                 .price(new BigDecimal(39))
                 .build();

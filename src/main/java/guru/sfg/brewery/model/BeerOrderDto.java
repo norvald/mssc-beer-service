@@ -49,6 +49,16 @@ public class BeerOrderDto {
     private UUID customerId;
     private String customerRef;
     private List<BeerOrderLineDto> beerOrderLines;
-    private BeerOrderStatusEnum orderStatus;
+    private String orderStatus;
     private String orderStatusCallbackUrl;
+
+    //     id=ba14c12b-c5d0-4a27-935e-4eb6315766b7,
+    //     version=0,
+    //     createdDate=2022-12-22T11:02:12.320Z,
+    //     lastModifiedDate=2022-12-22T11:02:12.320Z,
+    //     customerId=8129345a-926e-48de-bd64-9cd2ed4e47ee,
+    //     customerRef=3b02e766-e21c-490a-aa89-9764d1cf6308,
+    //     beerOrderLines=[
+    //     orderStatus=NEW,
+    //     orderStatusCallbackUrl=null
 }

@@ -1,7 +1,7 @@
 package guru.springframework.msscbeerservice.services.order;
 
-import guru.sfg.brewery.model.events.ValidateBeerOrderRequest;
-import guru.sfg.brewery.model.events.ValidateBeerOrderResponse;
+import guru.sfg.brewery.model.events.ValidateOrderRequest;
+import guru.sfg.brewery.model.events.ValidateOrderResult;
 import guru.sfg.brewery.model.BeerOrderDto;
 import guru.sfg.brewery.model.BeerOrderLineDto;
 import guru.springframework.msscbeerservice.config.JmsConfig;
@@ -25,8 +25,9 @@ public class ValidateOrderListener {
 
     @Transactional
     @JmsListener(destination = JmsConfig.VALIDATE_ORDER_QUEUE)
-    public void listen(ValidateBeerOrderRequest event) {
-        BeerOrderDto beerOrderDto = event.getBeerOrderDto();
+    public void listen(ValidateOrderRequest event) {
+        log.debug("ValidateOrderRequest: "+event);
+        BeerOrderDto beerOrderDto = event.getBeerOrder();
         boolean isValid = true;
         for (BeerOrderLineDto orderLine : beerOrderDto.getBeerOrderLines()) {
             Optional<Beer> beer = beerRepository.findOptionalByUpc(orderLine.getUpc());
@@ -35,8 +36,8 @@ public class ValidateOrderListener {
             }
         }
 
-        jmsTemplate.convertAndSend(JmsConfig.VALIDATE_ORDER_RESPONSE_QUEUE, ValidateBeerOrderResponse.builder()
-                .beerOrderId(beerOrderDto.getId().toString())
+        jmsTemplate.convertAndSend(JmsConfig.VALIDATE_ORDER_RESPONSE_QUEUE, ValidateOrderResult.builder()
+                .orderId(beerOrderDto.getId().toString())
                 .isValid(isValid)
                 .build());
     }

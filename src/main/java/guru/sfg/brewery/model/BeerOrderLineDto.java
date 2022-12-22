@@ -52,6 +52,21 @@ public class BeerOrderLineDto {
     private String beerStyle;
     private UUID beerId;
     private Integer orderQuantity = 0;
-    private Integer quantityAllocated;
     private BigDecimal price;
+    private Integer quantityAllocated;
+
+    // BeerOrderLineDto(
+    // id=d0a02421-1b68-48ab-9e2b-729ce38a3edc,
+    // version=0,
+    // createdDate=2022-12-22T11:16:03.713Z,
+    // lastModifiedDate=2022-12-22T11:16:03.713Z,
+    // upc=0083783375213,
+    // beerName=Pinball Porter,
+    // beerStyle=PORTER,
+    // beerId=68ad6d38-4133-4417-a8d4-e474d842cd69,
+    // orderQuantity=0,
+    // price=12.95,
+    // quantityAllocated=null
+    // )
+
 }
